@@ -14,11 +14,11 @@ interface InvoicesTableProps {
   goToPage: (page: number) => void;
   handleSort: (sortBy: InvoicesQueryParams["sortBy"]) => void;
   onView: (invoice: Invoice) => void;
-  onEdit: (invoice: Invoice) => void;
   onDeliver: (invoice: Invoice) => void;
   onDelete: (invoice: Invoice) => void;
   onAddPayment: (invoice: Invoice) => void;
   onRowClick?: (row: Invoice) => void;
+  onDownloadPDF: (invoice: Invoice) => void;
 }
 
 const COLUMNS_WIDTHS = [
@@ -40,11 +40,12 @@ export const InvoicesTable = ({
   goToPage,
   // handleSort,
   onView,
-  onEdit,
+
   onDeliver,
   onDelete,
   onAddPayment,
   onRowClick,
+  onDownloadPDF,
 }: InvoicesTableProps) => {
   const fallbackData = useMemo(() => [], []);
   const invoicesList = data?.data ?? fallbackData;
@@ -55,12 +56,12 @@ export const InvoicesTable = ({
     () =>
       createInvoiceColumns({
         onView,
-        onEdit,
         onDeliver,
         onDelete,
         onAddPayment,
+        onDownloadPDF,
       }),
-    [onView, onEdit, onDeliver, onDelete, onAddPayment],
+    [onView, onDeliver, onDelete, onAddPayment, onDownloadPDF],
   );
 
   const table = useReactTable({
