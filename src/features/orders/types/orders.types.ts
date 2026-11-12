@@ -1,5 +1,5 @@
 // frontend/src/features/orders/types/orders.types.ts
-import type { OrderStatus } from "../schema/orders.schema";
+// import type { OrderStatus } from "../schema/orders.schema";
 
 // ============================================================
 // 1. TYPES DE BASE
@@ -129,3 +129,21 @@ export type PaginatedOrdersResponse = {
     sortOrder: "asc" | "desc";
   };
 };
+
+export type OrderStats = {
+  waitingForFile: number;
+  inProgress: number;
+  inProduction: number;
+  readyForDelivery: number;
+  byStatus: Record<string, number>;
+};
+
+export type OrderStatus =
+  | "waiting_for_file"
+  | "in_progress"
+  | "file_completed"
+  | "printing_in_progress"
+  | "cutting_in_progress"
+  | "ready_for_delivery"
+  | "delivered"
+  | "cancelled";
