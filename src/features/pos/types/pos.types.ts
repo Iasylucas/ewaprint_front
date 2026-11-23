@@ -11,6 +11,8 @@ export interface PosCartLine {
   quantity: number;
   unitPrice: number;
   atelierNote?: string | null;
+  waitingForVisual?: boolean;
+  visualLinks?: string[];
 }
 
 // types for requests
@@ -33,6 +35,7 @@ export interface UpdateOrderLine {
   quantity: number;
   unitPrice: number;
   atelierNote?: string | null;
+  visualLinks?: string[];
 }
 
 export interface updateInvoiceFromPosRequest {

@@ -15,7 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Settings } from "lucide-react";
+import { LogOut, User, Briefcase } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Skeleton } from "../ui/skeleton";
 import { useCompanyStore } from "@/features/company-info/stores/companyStore";
@@ -132,16 +132,16 @@ export const AppSidebar = () => {
 
                 {user?.role === "ADMIN" && (
                   <SidebarMenuItem>
-                    <NavLink to="/settings">
+                    <NavLink to="/company">
                       {({ isActive }) => (
                         <SidebarMenuButton
                           asChild
-                          tooltip="Paramètres"
+                          tooltip="Entreprise"
                           isActive={isActive}
                         >
                           <div>
-                            <Settings className="h-4 w-4" />
-                            <span>Paramètres</span>
+                            <Briefcase className="h-4 w-4" />
+                            <span>Entreprise</span>
                           </div>
                         </SidebarMenuButton>
                       )}
@@ -155,12 +155,8 @@ export const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="border-t p-2">
-        <div
-          className={cn(
-            "flex w-full items-center gap-3 px-1 py-1.5",
-            isCollapsed && "justify-center px-0",
-          )}
-        >
+        <div className="flex w-full items-center gap-3 px-0 py-1.5">
+          {/* Avatar : reste visible dans les deux états */}
           {isIconMode ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -188,9 +184,9 @@ export const AppSidebar = () => {
                   Mon profil
                 </DropdownMenuItem>
                 {user?.role === "ADMIN" && (
-                  <DropdownMenuItem onClick={() => navigate("/settings")}>
-                    <Settings className="h-4 w-4" />
-                    Paramètres
+                  <DropdownMenuItem onClick={() => navigate("/company")}>
+                    <Briefcase className="h-4 w-4" />
+                    Entreprise
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem
@@ -217,26 +213,33 @@ export const AppSidebar = () => {
             </div>
           )}
 
-          {!isIconMode && (
-            <>
-              <div className="flex flex-1 flex-col items-start text-left min-w-0">
-                <span className="truncate text-sm font-medium leading-none text-sidebar-foreground">
-                  {fullName}
-                </span>
-                <span className="truncate text-xs text-muted-foreground mt-1">
-                  {user?.email || "email@exemple.com"}
-                </span>
-              </div>
+          {/* Texte : animé en opacité et largeur */}
+          <div
+            className={cn(
+              "flex flex-col items-start text-left min-w-0 transition-all duration-200 overflow-hidden",
+              isIconMode ? "opacity-0 w-0 flex-none" : "opacity-100 flex-1",
+            )}
+          >
+            <span className="truncate text-sm font-medium leading-none text-sidebar-foreground">
+              {fullName}
+            </span>
+            <span className="truncate text-xs text-muted-foreground mt-1">
+              {user?.email || "email@exemple.com"}
+            </span>
+          </div>
 
-              <button
-                onClick={() => logout()}
-                className="p-2 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                title="Déconnexion"
-              >
-                <LogOut className="h-4 w-4" />
-              </button>
-            </>
-          )}
+          {/* Bouton logout : animé en opacité et largeur */}
+          <button
+            onClick={() => logout()}
+            className={cn(
+              "p-2 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 shrink-0",
+              isIconMode &&
+                "opacity-0 pointer-events-none w-0 p-0 overflow-hidden",
+            )}
+            title="Déconnexion"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </SidebarFooter>
     </Sidebar>
