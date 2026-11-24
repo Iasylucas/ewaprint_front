@@ -471,13 +471,13 @@ export const OrderDetailDrawer = ({
                             key={file.id}
                             className="bg-muted/20 p-2 rounded-lg flex items-center justify-between group"
                           >
-                            <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+                            <div className="flex items-center gap-2 min-w-0 max- overflow-hidden">
                               <FileText className="h-3.5 w-3.5 shrink-0" />
                               <a
                                 href={file.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm hover:underline truncate block max-w-[300px]"
+                                className="text-sm hover:underline truncate block max-w-[200px]"
                               >
                                 {file.url}
                               </a>
