@@ -60,6 +60,40 @@ export const OrderDetailDrawer = ({
   const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
   const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
   const { user } = useAuth();
+  const { role } = user || {};
+
+  // Permission de modification de statut par rôle
+  // Les rôles disponibles : ADMIN, SALES, PRINTER, GRAPHIC_DESIGNER
+  const isAdmin = role === "ADMIN";
+  const isSales = role === "SALES";
+  const isPrinter = role === "PRINTER";
+  const isGraphicDesigner = role === "GRAPHIC_DESIGNER";
+
+  const canEditStatusByRole = (status: OrderStatus): boolean => {
+    if (isSales) {
+      return (
+        status === "waiting_for_visual" ||
+        status === "waiting_for_file"
+      );
+    }
+    if (isPrinter) {
+      return (
+        status === "printing_in_progress" ||
+        status === "cutting_in_progress" ||
+        status === "ready_for_delivery"
+      );
+    }
+    if (isGraphicDesigner) {
+      return (
+        status === "in_progress" || status === "file_completed"
+      );
+    }
+    // ADMIN can edit all statuses
+    if (isAdmin) {
+      return true;
+    }
+    return false;
+  };
 
   if (!orderId) return null;
 
@@ -247,14 +281,18 @@ export const OrderDetailDrawer = ({
                       <SelectValue placeholder="Changer le statut..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableStatuses
-                        .filter((s) => s !== "not_applicable")
-                        .map((status) => (
-                          <SelectItem key={status} value={status}>
-                            {ORDER_STATUS_LABELS[status]}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
+                  {availableStatuses
+                    .filter((s) => s !== "not_applicable")  // Garde delivered affiché
+                    .map((status) => (
+                      <SelectItem 
+                        key={status} 
+                        value={status}
+                        disabled={status === "delivered" || !canEditStatusByRole(status)}
+                      >
+                        {ORDER_STATUS_LABELS[status]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                   </Select>
                   {updateStatusMutation.isPending && (
                     <Loader2 className="h-4 w-4 animate-spin" />
