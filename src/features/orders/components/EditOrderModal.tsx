@@ -24,7 +24,7 @@ const editOrderSchema = z.object({
   designation: z.string().min(1, "La désignation est requise"),
   label: z.string().nullable().optional(),
   dimensions: z.string().nullable().optional(),
-  quantity: z.number().int().positive("La quantité doit être supérieure à 0"),
+  quantity: z.number().positive("La quantité doit être supérieure à 0"),
   unitPrice: z.number().int().nonnegative("Le prix unitaire doit être positif"),
 });
 

@@ -472,13 +472,14 @@ export const PosCart = ({
                     <div className="col-span-1">
                       <Input
                         type="number"
-                        min={1}
+                        min={0.5}
+                        step={0.5}
                         value={line.quantity || 1}
                         onChange={(e) =>
                           onUpdateLine(
                             index,
                             "quantity",
-                            parseInt(e.target.value) || 1,
+                            parseFloat(e.target.value) || 1,
                           )
                         }
                         className="h-7 text-xs text-center px-1"
